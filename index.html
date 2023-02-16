@@ -21,6 +21,7 @@
 </style>
 
 <script>
+  drawGraph();
 const width=55000,height=1000;
   
   var byteData;
@@ -51,6 +52,7 @@ const width=55000,height=1000;
 function drawGraph(){
     const canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     ctx.rect(0, 0, width, height);
     ctx.stroke();//描画を反映
@@ -76,7 +78,6 @@ function draw(){
   console.log(tate);
   const canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
 ctx.beginPath();
 ctx.rect(0, 0, canvas.width, canvas.height);
 ctx.moveTo(0,300);// パスの始点を移動する
