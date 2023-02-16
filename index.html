@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<input type="file" id="file1" name="filename">
+横軸<input type="text" id="yoko" value="100">
+縦軸<input type="text" id="tate" value="1000000">
+最小<input type="text" id="min" value="0">
+最小<input type="text" id="min" value="0">
+<pre id="pre1"></pre>
+<canvas id="canvas" width="55000" height="1000"></canvas>
+
+<style>
+.graph{
+  width:width;
+  height:height;
+  overflow:scroll;
+}
+</style>
+
+<script>
+const width=55000,height=1000;
+  
+  var byteData;
+
+  window.addEventListener('load', () => {
+  const f = document.getElementById('file1');
+  f.addEventListener('change', evt => {
+    let input = evt.target;
+    if (input.files.length == 0) {
+      console.log('No file selected');
+      return;
+    }
+    const file = input.files[0];
+    const reader = new FileReader();
+    //reader.readAsText(file);
+    reader.readAsArrayBuffer(file)
+
+    reader.onload = () => {
+      const pre = document.getElementById('pre1');
+      byteData=reader.result;
+    console.log(byteData);
+      draw();
+      //pre.innerHTML = reader.result;
+    };
+  });
+});
+//グラフの枠の描画/////
+function drawGraph(){
+    const canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    ctx.rect(0, 0, width, height);
+    ctx.stroke();//描画を反映
+    ctx.font = '15px serif';
+    for(var i=0;i<width;i+=100){
+    ctx.fillText(i, i, height-100);
+    }
+    for(var i=0;i<height;i+=100){
+    ctx.fillText(height-i, 0, i);
+    }
+}
+
+var yokoE=document.getElementById("yoko");
+var tateE=document.getElementById("tate");
+yokoE.addEventListener("change",draw)
+tateE.addEventListener("change",draw)
+
+function draw(){
+  drawGraph();
+  var yoko=document.getElementById("yoko").value;
+  var tate=document.getElementById("tate").value;
+  console.log(yoko);
+  console.log(tate);
+  const canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.beginPath();
+ctx.rect(0, 0, canvas.width, canvas.height);
+ctx.moveTo(0,300);// パスの始点を移動する
+console.log(byteData.byteLength);
+
+var dv=new DataView(byteData);
+for(var i=0;i<byteData.byteLength;i+=4){    
+    var y=dv.getInt32(i,true);
+    ctx.lineTo(i/yoko,-y/tate+height-100); // パスに線を追加する
+}
+ctx.stroke();//描画を反映
+}
+
+</script>
+
+
+</body>
+</html>
