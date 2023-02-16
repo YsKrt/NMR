@@ -22,8 +22,6 @@
 
 <script>
   drawGraph();
-const width=55000,height=1000;
-  
   var byteData;
 
   window.addEventListener('load', () => {
@@ -54,14 +52,14 @@ function drawGraph(){
     var ctx = canvas.getContext("2d");
 ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
-    ctx.rect(0, 0, width, height);
+    ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.stroke();//描画を反映
     ctx.font = '15px serif';
-    for(var i=0;i<width;i+=100){
-    ctx.fillText(i, i, height-100);
+    for(var i=0;i<canvas.width;i+=100){
+    ctx.fillText(i, i,canvas.height-100);
     }
-    for(var i=0;i<height;i+=100){
-    ctx.fillText(height-i, 0, i);
+    for(var i=0;i<canvas.height;i+=100){
+    ctx.fillText(canvas.height-i, 0, i);
     }
 }
 
@@ -86,7 +84,7 @@ console.log(byteData.byteLength);
 var dv=new DataView(byteData);
 for(var i=0;i<byteData.byteLength;i+=4){    
     var y=dv.getInt32(i,true);
-    ctx.lineTo(i/yoko,-y/tate+height-100); // パスに線を追加する
+    ctx.lineTo(i/yoko,-y/tate+canvas.height-100); // パスに線を追加する
 }
 ctx.stroke();//描画を反映
 }
